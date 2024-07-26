@@ -15,7 +15,7 @@ template <uint16_t byteSize>
 class SerialMessage{
     public:
         // @warning Never use this to construct a SerialMessage object
-        SerialMessage() = default;
+        SerialMessage() = delete;
         /**
          * @brief Construct a new Serial Message object
          */
@@ -46,19 +46,19 @@ class SerialMessage{
          * @brief Return a pointer to the args array
          * @return a pointer to the args array
          */
-        uint32_t * GetArgs();
+        int32_t * GetArgs();
 
         /**
          * @brief Returns the number of args that have been populated for the current message
          * @return the number of args that have been populated for the current message
          */
-        int GetArgsLength();
+        uint32_t GetArgsLength();
 
         /**
          * @brief Returns the number of args that have been populated for the current message
          * @return the number of args that have been populated for the current message
          */
-        int GetPopulatedArgs();
+        uint32_t GetPopulatedArgs();
 
         /**
          * @brief Prints the args array to the serial monitor
@@ -89,10 +89,10 @@ class SerialMessage{
         SerialState state{IDLE};
         char data[byteSize]; // an array to store the received data
         char temp_data[byteSize]; // an array that will be used with strtok()
-        uint16_t ndx{0};
+        uint32_t ndx{0};
         static constexpr uint16_t args_length{30};
-        uint16_t populatedArgs{0}; // the number of args that have been populated for the current message
-        uint32_t args[args_length];
+        uint32_t populatedArgs{0}; // the number of args that have been populated for the current message
+        int32_t args[args_length];
         const char startMarker = '!';
         const char endMarker = ';';
     
@@ -196,17 +196,17 @@ void SerialMessage<byteSize>::ClearNewData(){
 }
 
 template <uint16_t byteSize>
-uint32_t * SerialMessage<byteSize>::GetArgs(){
+int32_t * SerialMessage<byteSize>::GetArgs(){
     return args;
 }
 
 template <uint16_t byteSize>
-int SerialMessage<byteSize>::GetArgsLength(){
+uint32_t SerialMessage<byteSize>::GetArgsLength(){
     return args_length;
 }
 
 template <uint16_t byteSize>
-int SerialMessage<byteSize>::GetPopulatedArgs(){
+uint32_t SerialMessage<byteSize>::GetPopulatedArgs(){
     return populatedArgs;
 }
 
