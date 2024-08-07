@@ -15,12 +15,12 @@ class TelnetMessage : public Message<SERIAL_BUFFER_SIZE, MAX_ARGS>{
         TelnetMessage(ESPTelnet *telnet) : 
         telnet(telnet){}
 
-        void Init(uint32_t baudRate) override{this->Init();}
+        void Init(uint32_t baudRate) override{Serial.println("Never call this without a parameter, this will not function properly without a callback function");}
         /**
          * @brief Initialize the TelnetMessage object
          * @pre The WiFi object must have a state of WL_CONNECTED
          */
-        void Init();
+        void Init(void (*callback)(String data));
 
         /**
          * @brief prints the args array to the telnet monitor
@@ -116,13 +116,15 @@ uint32_t TelnetMessage<SERIAL_BUFFER_SIZE, MAX_ARGS>::dataAvailable(){
 }
 
 template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS>
-void TelnetMessage<SERIAL_BUFFER_SIZE, MAX_ARGS>::Init(){
+void TelnetMessage<SERIAL_BUFFER_SIZE, MAX_ARGS>::Init(void (*callback)(String data)){
     telnet->begin(23);
     // set all of our callbacks
     telnet->onConnect(TelnetMessage::onConnectCallback);
     telnet->onConnectionAttempt(TelnetMessage::onConnectionAttemptCallback);
     telnet->onReconnect(TelnetMessage::onReconnectCallback);
     telnet->onDisconnect(TelnetMessage::onDisconnectCallback);
+
+    this->SetOnInputRecieved(callback);
 }
 
 template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS>
