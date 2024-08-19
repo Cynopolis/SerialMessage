@@ -1,6 +1,6 @@
 #pragma once
 #include "SerialMessage.h"
-#include <Arduino.h>
+#include <USBCDC.h>
 
 template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS>
 class USBMessage : public Message<SERIAL_BUFFER_SIZE, MAX_ARGS>{
