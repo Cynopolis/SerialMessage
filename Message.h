@@ -50,7 +50,7 @@ class Message{
          * @brief Returns the number of args that have been populated for the current message
          * @return the number of args that have been populated for the current message
          */
-        uint32_t GetArgsLength();
+        uint32_t GetMaxArgs();
 
         /**
          * @brief Returns the number of args that have been populated for the current message
@@ -177,7 +177,7 @@ int32_t * Message<SERIAL_BUFFER_SIZE, MAX_ARGS>::GetArgs(){
 }
 
 template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS>
-uint32_t Message<SERIAL_BUFFER_SIZE, MAX_ARGS>::GetArgsLength(){
+uint32_t Message<SERIAL_BUFFER_SIZE, MAX_ARGS>::GetMaxArgs(){
     return MAX_ARGS;
 }
 
