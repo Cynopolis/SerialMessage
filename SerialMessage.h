@@ -23,7 +23,7 @@ class SerialMessage : public Message<SERIAL_BUFFER_SIZE, MAX_ARGS>{
         /**
          * @brief Initialize the SerialMessage object
          */
-        void Init(unsigned int baudRate) override;
+        void Init(uint32_t baudRate) override;
 
         /**
          * @brief Prints the args array to the serial monitor
