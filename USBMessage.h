@@ -2,8 +2,8 @@
 #include "SerialMessage.h"
 #include <USBCDC.h>
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS>
-class USBMessage : public Message<SERIAL_BUFFER_SIZE, MAX_ARGS>{
+template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
+class USBMessage : public Message<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS> {
     public:
         /**
          * @brief Construct a new USB Serial Message object
@@ -23,26 +23,26 @@ class USBMessage : public Message<SERIAL_BUFFER_SIZE, MAX_ARGS>{
 
 };
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS>
-USBMessage<SERIAL_BUFFER_SIZE, MAX_ARGS>::USBMessage(USBCDC *USBSerial) : serial(USBSerial){}
+template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
+USBMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::USBMessage(USBCDC *USBSerial) : serial(USBSerial){}
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS>
-char USBMessage<SERIAL_BUFFER_SIZE, MAX_ARGS>::getChar(){
+template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
+char USBMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::getChar(){
     return serial->read();
 }
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS>
-uint32_t USBMessage<SERIAL_BUFFER_SIZE, MAX_ARGS>::dataAvailable(){
+template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
+uint32_t USBMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::dataAvailable(){
     return serial->available();
 }
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS>
-void USBMessage<SERIAL_BUFFER_SIZE, MAX_ARGS>::Init(uint32_t baudRate){
+template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
+void USBMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::Init(uint32_t baudRate){
     serial->begin();
 }
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS>
-void USBMessage<SERIAL_BUFFER_SIZE, MAX_ARGS>::PrintArgs(){
+template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
+void USBMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::PrintArgs(){
     serial->print("Current number of args: ");
     serial->println(this->populatedArgs);
     for (int i = 0; i < this->populatedArgs; i++) {

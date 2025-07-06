@@ -12,8 +12,8 @@
 
 #include "Message.h"
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS>
-class SerialMessage : public Message<SERIAL_BUFFER_SIZE, MAX_ARGS>{
+template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
+class SerialMessage : public Message<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>{
     public:
         /**
          * @brief Construct a new Serial Message object
@@ -47,27 +47,27 @@ class SerialMessage : public Message<SERIAL_BUFFER_SIZE, MAX_ARGS>{
         HardwareSerial *serial{nullptr};
 };
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS>
-char SerialMessage<SERIAL_BUFFER_SIZE, MAX_ARGS>::getChar(){
+template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
+char SerialMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::getChar(){
     return this->serial->read();
 }
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS>
-uint32_t SerialMessage<SERIAL_BUFFER_SIZE, MAX_ARGS>::dataAvailable(){
+template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
+uint32_t SerialMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::dataAvailable(){
     return this->serial->available();
 }
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS>
-SerialMessage<SERIAL_BUFFER_SIZE, MAX_ARGS>::SerialMessage(HardwareSerial *serial) :
+template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
+SerialMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::SerialMessage(HardwareSerial *serial) :
     serial(serial){}
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS>
-void SerialMessage<SERIAL_BUFFER_SIZE, MAX_ARGS>::Init(uint32_t baudRate){
+template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
+void SerialMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::Init(uint32_t baudRate){
     this->serial->begin(baudRate);
 }
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS>
-void SerialMessage<SERIAL_BUFFER_SIZE, MAX_ARGS>::PrintArgs(){
+template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
+void SerialMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::PrintArgs(){
     return;
     this->serial->print("Current number of args: ");
     this->serial->println(this->populatedArgs);

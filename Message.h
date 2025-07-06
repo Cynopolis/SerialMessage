@@ -10,9 +10,23 @@
 
 #include <cstdint>
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS>
+template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
 class Message{
     public:
+        /**
+         * @brief Callback function type that can be registered to handle new data. 
+         * Return true if you're done processing the command. 
+         * If you don't return true you have to manually tell the Message class that you're done.
+         */
+        using CallbackFunction = bool (*)(const uint32_t *data, uint32_t length);
+
+        /**
+         * @brief A structure to hold a callback function and the message it is registered for
+         */
+        struct Callback {
+            uint32_t messageID; // the message that this callback is registered for
+            CallbackFunction function; // the function to call when this message is received
+        };
 
         /**
          * @brief Initialize the Message object
@@ -58,6 +72,11 @@ class Message{
          */
         uint32_t GetPopulatedArgs();
 
+        /**
+         * @brief Register a callback function to be called when new data is received
+         */
+        void RegisterCallback(const Callback &callback);
+
     protected:
         enum SerialState : uint8_t{
             IDLE,
@@ -83,25 +102,37 @@ class Message{
          * Also marks what state the Message object is in
          */
         void readSerial();
+
+        /**
+         * @brief Parses the received data and populates the args array
+         */
         void parseData();
+
+        /**
+         * @brief Call a registered callback function with the received data
+         */
+        void callCallback();
 
         SerialState state{IDLE};
         char data[SERIAL_BUFFER_SIZE]; // an array to store the received data
         char temp_data[SERIAL_BUFFER_SIZE]; // an array that will be used with strtok()
         uint32_t ndx{0};
         uint32_t populatedArgs{0}; // the number of args that have been populated for the current message
-        int32_t args[MAX_ARGS];
+        std::array<int32_t, MAX_ARGS> args;
         const char startMarker = '!';
         const char endMarker = ';';
+
+        std::array<Callback, MAX_CALLBACKS> callbacks; // array of callbacks to be called when new data is received
+        uint32_t numRegisteredCallbacks{0}; // the number of registered callbacks
 };
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS>
+template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
 void Init(uint32_t baudRate){
     Serial.println("You called Message::Init! This should NEVER happen!");
 }
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS>
-void Message<SERIAL_BUFFER_SIZE, MAX_ARGS>::readSerial(){
+template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
+void Message<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::readSerial(){
     char c;
 
     // read the incoming serial data:
@@ -135,8 +166,8 @@ void Message<SERIAL_BUFFER_SIZE, MAX_ARGS>::readSerial(){
     }
 }
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS>
-void Message<SERIAL_BUFFER_SIZE, MAX_ARGS>::parseData() {      // split the data into its parts
+template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
+void Message<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::parseData() {      // split the data into its parts
     this->populatedArgs = 0; // reset the populated args counter
     char * indx; // this is used by strtok() as an index
     int i = 0;
@@ -149,8 +180,8 @@ void Message<SERIAL_BUFFER_SIZE, MAX_ARGS>::parseData() {      // split the data
     }
 }
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS>
-void Message<SERIAL_BUFFER_SIZE, MAX_ARGS>::Update(){
+template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
+void Message<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::Update(){
     readSerial();
     if (this->state == SerialState::DATA_RECIEVED) {
         strcpy(temp_data, data);
@@ -158,30 +189,55 @@ void Message<SERIAL_BUFFER_SIZE, MAX_ARGS>::Update(){
         //   because strtok() used in parseData() replaces the commas with \0
         parseData();
         this->state = SerialState::NEW_DATA;
+        callCallback();
     }
 }
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS>
-bool Message<SERIAL_BUFFER_SIZE, MAX_ARGS>::IsNewData(){
+template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
+bool Message<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::IsNewData(){
     return this->state == SerialState::NEW_DATA;
 }
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS>
-void Message<SERIAL_BUFFER_SIZE, MAX_ARGS>::ClearNewData(){
+template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
+void Message<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::ClearNewData(){
     this->state = SerialState::IDLE;
 }
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS>
-int32_t * Message<SERIAL_BUFFER_SIZE, MAX_ARGS>::GetArgs(){
+template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
+int32_t * Message<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::GetArgs(){
     return args;
 }
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS>
-uint32_t Message<SERIAL_BUFFER_SIZE, MAX_ARGS>::GetMaxArgs(){
+template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
+uint32_t Message<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::GetMaxArgs(){
     return MAX_ARGS;
 }
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS>
-uint32_t Message<SERIAL_BUFFER_SIZE, MAX_ARGS>::GetPopulatedArgs(){
+template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
+uint32_t Message<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::GetPopulatedArgs(){
     return populatedArgs;
+}
+
+template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
+void Message<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::RegisterCallback(const Callback &callback){
+    if (numRegisteredCallbacks < MAX_CALLBACKS) {
+        callbacks[numRegisteredCallbacks] = callback;
+        numRegisteredCallbacks++;
+    } else {
+        // Handle the case where the maximum number of callbacks has been reached
+        Serial.println("Maximum number of callbacks reached. Cannot register new callback.");
+    }
+}
+
+template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
+void Message<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::callCallback() {
+    for (uint32_t i = 0; i < numRegisteredCallbacks; i++) {
+        if (callbacks[i].messageID == this->args[0]) { // the first arg is the message ID
+            bool dataProcessed = callbacks[i].function(reinterpret_cast<uint32_t *>(this->args.data()), this->GetPopulatedArgs());
+            if (dataProcessed) {
+                // If the callback function returns true, we can clear the new data flag
+                this->ClearNewData();
+            }
+        }
+    }
 }
