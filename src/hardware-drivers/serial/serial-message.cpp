@@ -7,6 +7,7 @@
  * @author Quinn Henthorne. Contact: quinn.henthorne@gmail.com
  */
 #ifndef SERIAL_MESSAGE_H_
+#define SERIAL_MESSAGE_H_
 #include "serial-message.h"
 #endif // SERIAL_MESSAGE_H_
 

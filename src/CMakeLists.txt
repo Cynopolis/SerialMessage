@@ -1,8 +1,3 @@
-add_subdirectory(bluetooth)
-add_subdirectory(serial)
-add_subdirectory(telnet)
-add_subdirectory(usb)
-
 # Serial Message Interface
 add_library(serial-message-intf
     INTERFACE

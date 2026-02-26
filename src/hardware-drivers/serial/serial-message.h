@@ -52,5 +52,6 @@ private:
 };
 
 #ifndef SERIAL_MESSAGE_H_
+#define SERIAL_MESSAGE_H_
 #include "serial-message.cpp"
 #endif // SERIAL_MESSAGE_H_
