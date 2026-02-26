@@ -1,0 +1,21 @@
+cmake_minimum_required (VERSION 3.11)
+project(SerialMessage)
+
+add_subdirectory(src)
+# add_subdirectory(unit-tests)
+
+set(CMAKE_CXX_STANDARD 11)
+
+add_compile_options(-Wall -Wextra -Wpedantic)
+add_compile_options (-fdiagnostics-color=always)
+set(CMAKE_COLOR_DIAGNOSTICS ON)
+
+# include(FetchContent)
+ 
+# FetchContent_Declare(
+#     Catch2
+#     GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+#     GIT_TAG v3.8.0 # or a later release
+# )
+ 
+# FetchContent_MakeAvailable(Catch2)
