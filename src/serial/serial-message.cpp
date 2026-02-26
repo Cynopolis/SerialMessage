@@ -1,17 +1,19 @@
 /**
- * @file SerialMessage.h
+ * @file Serialmessage.h
  * @brief This file contains the SerialMessage class
  * @details This file contains the SerialMessage class which is used to parse
  * serial messages
  * @version 1.0.0
  * @author Quinn Henthorne. Contact: quinn.henthorne@gmail.com
  */
-
-#pragma once
+#ifndef SERIAL_MESSAGE_H_
+#include "serial-message.h"
+#endif // SERIAL_MESSAGE_H_
 
 #include <Arduino.h>
+#include <cstdint>
 
-#include "Message.h"
+#include "message.h"
 
 template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS,
           uint32_t MAX_CALLBACKS>

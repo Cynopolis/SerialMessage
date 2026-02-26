@@ -1,5 +1,5 @@
 /**
- * @file SerialMessage.h
+ * @file Serialmessage.h
  * @brief This file contains the SerialMessage class
  * @details This file contains the SerialMessage class which is used to parse
  * serial messages
@@ -10,8 +10,9 @@
 #pragma once
 
 #include <Arduino.h>
+#include <cstdint>
 
-#include "Message.h"
+#include "message.h"
 
 template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS,
           uint32_t MAX_CALLBACKS>
@@ -49,3 +50,7 @@ protected:
 private:
   HardwareSerial *serial{nullptr};
 };
+
+#ifndef SERIAL_MESSAGE_H_
+#include "serial-message.cpp"
+#endif // SERIAL_MESSAGE_H_
