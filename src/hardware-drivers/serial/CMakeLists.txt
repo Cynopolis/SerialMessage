@@ -8,6 +8,7 @@ target_link_libraries(serial-message
     PUBLIC
     serial-message-intf
     PRIVATE
+    arduino-fake-intf
 )
 
 set_target_properties(serial-message

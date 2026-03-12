@@ -1,3 +1,5 @@
+add_subdirectory(hardware-drivers)
+
 # Serial Message Interface
 add_library(serial-message-intf
     INTERFACE

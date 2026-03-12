@@ -108,7 +108,7 @@ Message<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::GetPopulatedArgs() {
 template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS,
           uint32_t MAX_CALLBACKS>
 bool Message<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::RegisterCallback(
-    const message_intf::Callback &callback) {
+    const callback_intf::Callback &callback) {
   if (numRegisteredCallbacks < MAX_CALLBACKS) {
     callbacks[numRegisteredCallbacks] = callback;
     numRegisteredCallbacks++;
