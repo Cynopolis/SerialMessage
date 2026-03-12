@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "MESSAGE-INTF.h"
+#include "message-callback.h"
 #include <array>
 #include <cstdint>
 
@@ -65,7 +65,7 @@ public:
   /**
    * @brief Register a callback function to be called when new data is received
    */
-  bool RegisterCallback(const MESSAGE_INTF::Callback &callback);
+  bool RegisterCallback(const callback_intf::Callback &callback);
 
 protected:
   enum SerialState : uint8_t {
@@ -114,7 +114,7 @@ protected:
   const char startMarker = '!';
   const char endMarker = ';';
 
-  std::array<MESSAGE_INTF::Callback, MAX_CALLBACKS>
+  std::array<callback_intf::Callback, MAX_CALLBACKS>
       callbacks; // array of callbacks to be called when new data is received
   uint32_t numRegisteredCallbacks{0}; // the number of registered callbacks
 };
