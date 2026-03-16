@@ -1,4 +1,3 @@
-add_subdirectory(arduino-fake)
 add_subdirectory(bluetooth)
 add_subdirectory(serial)
 add_subdirectory(telnet)

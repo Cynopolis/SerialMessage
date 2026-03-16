@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.11)
 project(SerialMessage)
 
 add_subdirectory(src)
-# add_subdirectory(unit-tests)
+add_subdirectory(unit-test)
 
 set(CMAKE_CXX_STANDARD 11)
 

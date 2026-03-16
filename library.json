@@ -1,0 +1,27 @@
+{
+  "name": "SerialMessage",
+  "version": "1.0",
+  "description": "Abstract message parser for serial data.",
+  "keywords": [
+    "serial",
+    "bluetooth",
+    "telnet",
+    "usb",
+    "messaging",
+    "arduino"
+  ],
+  "authors": [
+    {
+      "name": "Quinton Henthorne"
+    }
+  ],
+  "license": "MIT",
+  "frameworks": [
+    "arduino"
+  ],
+  "platforms": "*",
+  "build": {
+    "srcDir": "src",
+    "includeDir": "src"
+  }
+}
