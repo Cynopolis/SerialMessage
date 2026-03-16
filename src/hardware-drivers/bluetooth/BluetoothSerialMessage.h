@@ -1,6 +1,7 @@
 #pragma once
 #include "Serialmessage.h"
 #include <BluetoothSerial.h>
+#include <cstdint>
 
 template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS,
           uint32_t MAX_CALLBACKS>

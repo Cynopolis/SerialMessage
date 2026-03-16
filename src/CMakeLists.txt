@@ -1,20 +1,20 @@
 add_subdirectory(hardware-drivers)
 
-# Serial Message Interface
-add_library(serial-message-intf
+# Message Interface
+add_library(message-intf
     INTERFACE
 )
 
-target_include_directories(serial-message-intf
+target_include_directories(message-intf
     INTERFACE
     .
 )
 
-target_link_libraries(serial-message-intf
+target_link_libraries(message-intf
     INTERFACE
 )
 
-# serial-message
+# message
 add_library(message 
     STATIC
     message.cpp
@@ -22,7 +22,7 @@ add_library(message
 
 target_link_libraries(message 
     PUBLIC
-    serial-message-intf
+    message-intf
     PRIVATE
 )
 

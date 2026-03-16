@@ -1,3 +1,17 @@
+# Message Interface
+add_library(serial-message-intf
+    INTERFACE
+)
+
+target_include_directories(serial-message-intf
+    INTERFACE
+    .
+)
+
+target_link_libraries(serial-message-intf
+    INTERFACE
+)
+
 # serial-message
 add_library(serial-message 
     STATIC
@@ -6,7 +20,7 @@ add_library(serial-message
 
 target_link_libraries(serial-message 
     PUBLIC
-    serial-message-intf
+    message-intf
     PRIVATE
     arduino-fake-intf
 )
