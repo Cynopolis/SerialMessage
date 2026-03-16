@@ -8,4 +8,5 @@ public:
   bool available();
   void print(const void *data);
   void println(const void *data);
+  void println();
 };
