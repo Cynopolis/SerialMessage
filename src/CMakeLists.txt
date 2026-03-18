@@ -1,32 +1,41 @@
-add_subdirectory(hardware-drivers)
+if(COMMAND idf_component_register)
+    # =========================
+    # ESP-IDF BUILD
+    # =========================
 
-# Message Interface
-add_library(message-intf
-    INTERFACE
-)
+    file(GLOB_RECURSE SRCS "*.cpp")
 
-target_include_directories(message-intf
-    INTERFACE
-    .
-)
+    idf_component_register(
+        SRCS ${SRCS}
+        INCLUDE_DIRS .
+    )
 
-target_link_libraries(message-intf
-    INTERFACE
-)
+else()
+    # =========================
+    # DESKTOP BUILD
+    # =========================
 
-# message
-add_library(message 
-    STATIC
-    message.cpp
-)
+    add_subdirectory(hardware-drivers)
 
-target_link_libraries(message 
-    PUBLIC
-    message-intf
-    PRIVATE
-)
+    # Message Interface
+    add_library(message-intf INTERFACE)
 
-set_target_properties(message
-    PROPERTIES
-    LINKER_LANGUAGE CXX
-)
+    target_include_directories(message-intf
+        INTERFACE
+        .
+    )
+
+    # message
+    add_library(message STATIC message.cpp)
+
+    target_link_libraries(message
+        PUBLIC
+        message-intf
+    )
+
+    set_target_properties(message
+        PROPERTIES
+        LINKER_LANGUAGE CXX
+    )
+
+endif()
