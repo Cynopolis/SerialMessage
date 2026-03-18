@@ -1,0 +1,4 @@
+add_subdirectory(bluetooth)
+add_subdirectory(serial)
+add_subdirectory(telnet)
+add_subdirectory(usb)
