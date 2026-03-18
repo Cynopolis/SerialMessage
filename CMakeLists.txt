@@ -1,21 +1,29 @@
-cmake_minimum_required (VERSION 3.16)
-project(SerialMessage)
+cmake_minimum_required(VERSION 3.16)
 
-add_subdirectory(src)
-add_subdirectory(unit-test)
+# Detect if we're inside ESP-IDF
+if(COMMAND idf_component_register)
 
-set(CMAKE_CXX_STANDARD 11)
+    # =========================
+    # ESP-IDF BUILD
+    # =========================
+    # Do NOTHING here.
+    # ESP-IDF handles everything.
+    
+else()
 
-add_compile_options(-Wall -Wextra -Wpedantic)
-add_compile_options (-fdiagnostics-color=always)
-set(CMAKE_COLOR_DIAGNOSTICS ON)
+    # =========================
+    # DESKTOP BUILD
+    # =========================
 
-# include(FetchContent)
- 
-# FetchContent_Declare(
-#     Catch2
-#     GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-#     GIT_TAG v3.8.0 # or a later release
-# )
- 
-# FetchContent_MakeAvailable(Catch2)
+    project(SerialMessage)
+
+    set(CMAKE_CXX_STANDARD 11)
+
+    add_compile_options(-Wall -Wextra -Wpedantic)
+    add_compile_options(-fdiagnostics-color=always)
+    set(CMAKE_COLOR_DIAGNOSTICS ON)
+
+    add_subdirectory(src)
+    add_subdirectory(unit-test)
+
+endif()
