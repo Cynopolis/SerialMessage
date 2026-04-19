@@ -1,7 +1,8 @@
 /**
  * @file SerialMessage.h
  * @brief This file contains the SerialMessage class
- * @details This file contains the SerialMessage class which is used to parse serial messages
+ * @details This file contains the SerialMessage class which is used to parse
+ * serial messages
  * @version 1.0.0
  * @author Quinn Henthorne. Contact: quinn.henthorne@gmail.com
  */
@@ -12,8 +13,12 @@
 
 #include "Message.h"
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
-class SerialMessage : public Message<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>
+template <
+  uint32_t SERIAL_BUFFER_SIZE,
+  uint32_t MAX_ARGS,
+  uint32_t MAX_CALLBACKS>
+class SerialMessage
+    : public Message<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>
 {
 public:
     /**
@@ -48,28 +53,54 @@ private:
     HardwareSerial *serial{nullptr};
 };
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
+template <
+  uint32_t SERIAL_BUFFER_SIZE,
+  uint32_t MAX_ARGS,
+  uint32_t MAX_CALLBACKS>
 char SerialMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::getChar()
 {
     return this->serial->read();
 }
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
-uint32_t SerialMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::dataAvailable()
+template <
+  uint32_t SERIAL_BUFFER_SIZE,
+  uint32_t MAX_ARGS,
+  uint32_t MAX_CALLBACKS>
+uint32_t
+SerialMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::dataAvailable()
 {
     return this->serial->available();
 }
 
+<<<<<<< Updated upstream
 template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
 SerialMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::SerialMessage(HardwareSerial *serial) : serial(serial) {}
+=======
+template <
+  uint32_t SERIAL_BUFFER_SIZE,
+  uint32_t MAX_ARGS,
+  uint32_t MAX_CALLBACKS>
+SerialMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::SerialMessage(
+  HardwareSerial *serial)
+    : serial(serial)
+{
+}
+>>>>>>> Stashed changes
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
-void SerialMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::Init(uint32_t baudRate)
+template <
+  uint32_t SERIAL_BUFFER_SIZE,
+  uint32_t MAX_ARGS,
+  uint32_t MAX_CALLBACKS>
+void SerialMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::Init(
+  uint32_t baudRate)
 {
     this->serial->begin(baudRate);
 }
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
+template <
+  uint32_t SERIAL_BUFFER_SIZE,
+  uint32_t MAX_ARGS,
+  uint32_t MAX_CALLBACKS>
 void SerialMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::PrintArgs()
 {
     return;

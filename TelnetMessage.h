@@ -6,14 +6,28 @@
 #include "WiFi.h"
 #include "GlobalPrint.h"
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
-class TelnetMessage : public Message<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>
+template <
+  uint32_t SERIAL_BUFFER_SIZE,
+  uint32_t MAX_ARGS,
+  uint32_t MAX_CALLBACKS>
+class TelnetMessage
+    : public Message<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>
 {
 public:
+<<<<<<< Updated upstream
     /**
      * @brief Construct a new Bluetooth Serial Message object
      */
     TelnetMessage(ESPTelnet *telnet) : telnet(telnet) {}
+=======
+  /**
+   * @brief Construct a new Bluetooth Serial Message object
+   */
+  TelnetMessage(ESPTelnet *telnet)
+      : telnet(telnet)
+  {
+  }
+>>>>>>> Stashed changes
 
     void Init(uint32_t baudRate) override { Serial.println("Never call this without a parameter, this will not function properly without a callback function"); }
     /**
@@ -54,45 +68,68 @@ private:
     uint32_t incomingDataCharIndex{0};
 };
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
-void TelnetMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::onConnectCallback(String ip)
+template <
+  uint32_t SERIAL_BUFFER_SIZE,
+  uint32_t MAX_ARGS,
+  uint32_t MAX_CALLBACKS>
+void TelnetMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::
+  onConnectCallback(String ip)
 {
     GlobalPrint::Print("- Telnet: ");
     GlobalPrint::Print(ip);
     GlobalPrint::Println(" connected");
 }
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
-void TelnetMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::onConnectionAttemptCallback(String ip)
+template <
+  uint32_t SERIAL_BUFFER_SIZE,
+  uint32_t MAX_ARGS,
+  uint32_t MAX_CALLBACKS>
+void TelnetMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::
+  onConnectionAttemptCallback(String ip)
 {
     GlobalPrint::Print("- Telnet: ");
     GlobalPrint::Print(ip);
     GlobalPrint::Println(" failed to connect");
 }
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
-void TelnetMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::onReconnectCallback(String ip)
+template <
+  uint32_t SERIAL_BUFFER_SIZE,
+  uint32_t MAX_ARGS,
+  uint32_t MAX_CALLBACKS>
+void TelnetMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::
+  onReconnectCallback(String ip)
 {
     GlobalPrint::Print("- Telnet: ");
     GlobalPrint::Print(ip);
     GlobalPrint::Println(" reconnected");
 }
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
-void TelnetMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::onDisconnectCallback(String ip)
+template <
+  uint32_t SERIAL_BUFFER_SIZE,
+  uint32_t MAX_ARGS,
+  uint32_t MAX_CALLBACKS>
+void TelnetMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::
+  onDisconnectCallback(String ip)
 {
     GlobalPrint::Print("- Telnet: ");
     GlobalPrint::Print(ip);
     GlobalPrint::Println(" disconnected");
 }
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
-void TelnetMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::SetOnInputRecieved(void (*callback)(String data))
+template <
+  uint32_t SERIAL_BUFFER_SIZE,
+  uint32_t MAX_ARGS,
+  uint32_t MAX_CALLBACKS>
+void TelnetMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::
+  SetOnInputRecieved(void (*callback)(String data))
 {
     this->telnet->onInputReceived(callback);
 }
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
+template <
+  uint32_t SERIAL_BUFFER_SIZE,
+  uint32_t MAX_ARGS,
+  uint32_t MAX_CALLBACKS>
 char TelnetMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::getChar()
 {
     // Stop us from reading any more data if there's nothing more to read
@@ -101,14 +138,26 @@ char TelnetMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::getChar()
         return this->endMarker;
     }
 
+<<<<<<< Updated upstream
     char output = this->incomingData[this->incomingDataCharIndex];
     this->incomingDataCharIndex++;
     // GlobalPrint::Println("Char Idx:" + String(this->incomingDataCharIndex) + ", Data Length:" + String(this->incomingDataLength) + ", Char:" + output);
     return output;
+=======
+  char output = this->incomingData[this->incomingDataCharIndex];
+  this->incomingDataCharIndex++;
+  // GlobalPrint::Println("Char Idx:" + String(this->incomingDataCharIndex) + ",
+  // Data Length:" + String(this->incomingDataLength) + ", Char:" + output);
+  return output;
+>>>>>>> Stashed changes
 }
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
-void TelnetMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::SetString(const char *data)
+template <
+  uint32_t SERIAL_BUFFER_SIZE,
+  uint32_t MAX_ARGS,
+  uint32_t MAX_CALLBACKS>
+void TelnetMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::SetString(
+  const char *data)
 {
     this->incomingDataLength = strlen(data);
     this->incomingDataCharIndex = 0;
@@ -116,8 +165,12 @@ void TelnetMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::SetString(const
     this->Update();
 }
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
-uint32_t TelnetMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::dataAvailable()
+template <
+  uint32_t SERIAL_BUFFER_SIZE,
+  uint32_t MAX_ARGS,
+  uint32_t MAX_CALLBACKS>
+uint32_t
+TelnetMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::dataAvailable()
 {
     if (this->incomingData == nullptr)
     {
@@ -126,8 +179,12 @@ uint32_t TelnetMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::dataAvailab
     return this->incomingDataLength - this->incomingDataCharIndex;
 }
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
-void TelnetMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::Init(void (*callback)(String data))
+template <
+  uint32_t SERIAL_BUFFER_SIZE,
+  uint32_t MAX_ARGS,
+  uint32_t MAX_CALLBACKS>
+void TelnetMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::Init(
+  void (*callback)(String data))
 {
     telnet->begin(23);
     // set all of our callbacks
@@ -139,7 +196,10 @@ void TelnetMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::Init(void (*cal
     this->SetOnInputRecieved(callback);
 }
 
-template <uint32_t SERIAL_BUFFER_SIZE, uint32_t MAX_ARGS, uint32_t MAX_CALLBACKS>
+template <
+  uint32_t SERIAL_BUFFER_SIZE,
+  uint32_t MAX_ARGS,
+  uint32_t MAX_CALLBACKS>
 void TelnetMessage<SERIAL_BUFFER_SIZE, MAX_ARGS, MAX_CALLBACKS>::PrintArgs()
 {
     telnet->print("Current number of args: ");
